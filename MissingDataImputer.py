@@ -4,8 +4,15 @@ from tkinter import filedialog, messagebox
 
 #Load File
 class MissingDataImputer(object):
-
+    
+    #Allow User to Select File via tkinter, returns file_path
     def getFilePath(self):
+    """Get Name and Location of User's CSV file
+        Args:
+            None
+        Returns:
+            File Path of Target CSV.
+       """
         root = tk.Tk()
         messagebox.showinfo("Rover.com Analysis", "Click OK to Choose your SQLite3DB File.")
         root.withdraw()
@@ -14,16 +21,34 @@ class MissingDataImputer(object):
 
 
     def get_file(self, filename):
+    """ Extract csv file contents, sep on semi-colon
+    Args:
+        filename: Path to target CSV
+    Returns:
+        raw data of csv file
+   """
         raw = pd.read_csv(filename, sep=';')
         return raw
 
     #Convert Raw File to DataFrame
     def make_dataframe(self, filecontents):
+        """ Create Pandas DataFrame of raw file contents
+        Args:
+            filecontents: Raw Contents
+        Returns:
+            Dataframe of csv file
+       """
         dataframe = pd.DataFrame(filecontents)
         return dataframe
 
-    #Check if values missing, generate list of cols with NaN indices
+    
     def check_integrity(self, input_df):
+       """  Check if values missing, generate list of cols with NaN indices
+        Args:
+            filecontents: input_df
+        Returns:
+            List containing column names containing missing data
+       """
         if input_df.isnull:
             print("Detected Missing Data\nSums:")
             num_rows = len(input_df.index)
@@ -36,8 +61,14 @@ class MissingDataImputer(object):
         else:
             print("No Missing Data Was Detected.")
 
-    #Imputes missing values of detected cols with interpolation methodology
     def impute(self, input_df, missing):
+       """ Imputes missing values of detected cols with interpolation methodology
+        Args:
+              input_df : dataframe
+              missing  : columns labels associated with missing observations
+        Returns:
+              dataframe with interpolated values
+       """
         for each in missing:
             input_df[each] = input_df[each].interpolate()
         return input_df
