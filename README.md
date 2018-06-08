@@ -1,4 +1,4 @@
-# Missing_Data_Imputer
+# Missing Data Imputer
 ## Detect and Replace Missing Values
 
 ### Process
